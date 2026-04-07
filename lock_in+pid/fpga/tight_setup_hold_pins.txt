@@ -1,0 +1,50 @@
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+|       Launch Clock       |      Capture Clock       |                                                 Pin                                                      |
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+|              pll_adc_clk |              pll_adc_clk |                                                      i_lock/i_lock_pid_block_B/i_sat14_int_i_52_psdsp_7/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                  i_lock/i_lock_pid_block_B/error_reg[4]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                      i_lock/i_muxer5_scope1/out_reg[13]/D|
+|              pll_adc_clk |           pll_dac_clk_1x |                                                                                       dac_dat_a_reg[13]/D|
+|              pll_adc_clk |           pll_dac_clk_1x |                                                                                       dac_dat_b_reg[13]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                          i_lock/i_gen_mod/sq_phas_r_reg/D|
+|              pll_adc_clk |              pll_adc_clk |                                                            i_lock/i_lock_pid_block_A/int_shr_reg_reg[6]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                            i_lock/i_lock_pid_block_A/int_shr_reg_reg[9]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                           i_lock/i_lock_pid_block_A/int_shr_reg_reg[14]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_LP_filter_sq_quad_A/sum_reg[1]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_LP_filter_sq_quad_A/sum_reg[0]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[3]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[2]/D|
+|              pll_adc_clk |              pll_adc_clk |                                           i_lock/i_debounce_out_of_lock/FSM_sequential_state_reg_reg[0]/D|
+|              pll_adc_clk |              pll_adc_clk |                                           i_lock/i_debounce_out_of_lock/FSM_sequential_state_reg_reg[1]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[0]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[1]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[6]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[5]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                              i_lock/i_debounce_out_of_lock/q_reg_reg[4]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                  i_lock/i_trigger_input/tirgger_now_reg/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[3]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[1]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                i_lock/i_lock_pid_block_A/kp_reg_reg[10]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[6]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                i_lock/i_lock_pid_block_A/kp_reg_reg[18]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[7]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[2]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                i_lock/i_lock_pid_block_A/kp_reg_reg[16]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_A/kp_reg_reg[4]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                i_lock/i_lock_pid_block_A/kp_reg_reg[19]/D|
+|               clk_fpga_3 |               clk_fpga_3 |                                      i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.ip2bus_wrack_reg/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                i_lock/i_lock_pid_block_A/kp_reg_reg[17]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                            i_scope/i_wr0/dat_cnt_reg[1]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[10].GEN_REG_STATUS.ip_irpt_status_reg_reg[10]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_B/kp_reg_reg[1]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                         i_scope/i_wr0/axi_wlen_o_reg[1]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[11].GEN_REG_STATUS.ip_irpt_status_reg_reg[11]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                 i_lock/i_lock_pid_block_B/kp_reg_reg[5]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[4].GEN_REG_STATUS.ip_irpt_status_reg_reg[4]/D|
+|              pll_adc_clk |              pll_adc_clk |                                                                           i_lock/i_lock_ctrl/cnt_reg[0]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[7].GEN_REG_STATUS.ip_irpt_status_reg_reg[7]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/axi_protocol_converter_0/inst/gen_axilite.gen_b2s_conv.axilite_b2s/WR.aw_channel_0/cmd_translator_0/incr_cmd_0/axaddr_incr_reg[9]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[9].GEN_REG_STATUS.ip_irpt_status_reg_reg[9]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[12].GEN_REG_STATUS.ip_irpt_status_reg_reg[12]/D|
+|               clk_fpga_3 |               clk_fpga_3 |i_ps/system_i/system_i/xadc/inst/INTR_CTRLR_GEN_I.INTERRUPT_CONTROL_I/GEN_IP_IRPT_STATUS_REG[15].GEN_REG_STATUS.ip_irpt_status_reg_reg[15]/D|
++--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
