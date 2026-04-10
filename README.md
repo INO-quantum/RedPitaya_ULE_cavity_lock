@@ -8,7 +8,7 @@ We have modified the [original source on github](https://github.com/marceluda/rp
 
 ## Project structure
 
-Here an overview of the project file structure, where folders with [*] indicating that files have been changed with respect to the original source. The `lockin+pid` folder has to be copied on the RedPitaya board (see section `Setup of the RedPitaya board`). The `fpga` folder has been removed from `lockin+pid` since it does not need to be uploaded on the board.
+Here an overview of the project file structure, where folders with [*] indicating that files have been changed with respect to the original source. The `lock_in+pid` folder has to be copied to the RedPitaya board (see section `Setup of the RedPitaya board`). The `fpga` folder has been removed from `lock_in+pid` since it does not need to be uploaded on the board.
 
 ```
 ├── fpga                    FPGA source [*]
@@ -17,7 +17,7 @@ Here an overview of the project file structure, where folders with [*] indicatin
 │   │   └── lock            (System) Verilog source files [*]
 │   └── sdc                 constraint file
 ├── images                  images for readme [*]
-└── lockin+pid              source file folder to be copied on RP board [*]
+└── lock_in+pid             source file folder to be copied on RP board [*]
     ├── css                 style sheets
     ├── doc                 documentation
     ├── info                info.json [*] and original icons
@@ -46,7 +46,7 @@ Example signal after the mixer before amplification:
 
 ## Setup of RedPitaya board
 
-Here the instructions how to setup the lockin and PID source on your RedPitaya.
+Here the instructions how to setup the lock-in and PID source on your RedPitaya.
 
 Copy the source folder on you local computer. Either download the compressed file and uncompress or use:
 
@@ -73,7 +73,7 @@ Copy all source files and folders to the RedPitaya using SCP and your root passw
 
         scp -r lock_in+pid root@rp-xxxxxx.local:/opt/redpitaya/www/apps/lock_in+pid
 
-Enter again with SSH and cd into the new lockin_in+pid folder:
+Enter again with SSH and cd into the new lock_in+pid folder:
 
         ssh root@rp-xxxxxx.local
         cd /opt/redpitaya/www/apps/lock_in+pid/src
@@ -92,7 +92,7 @@ For the changes to take effect you have to reboot the RedPitaya:
   
         reboot
         
-This will automatically `exit` from the SSH session and after a few seconds reload the list of apps in the browser and you should find the `lockin+pid` application icon. 
+This will automatically `exit` from the SSH session and after a few seconds reload the list of apps in the browser and you should find the `lock_in+pid` application icon. 
 
 
 ## Error signal and locking of laser
