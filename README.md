@@ -6,6 +6,27 @@ This work is based on the [lock-in and PID code by Marcelo Alejandro Luda](https
 
 We have modified the [original source on github](https://github.com/marceluda/rp_lock-in_pid) by replacing the square lock-in modulation with a sine-wave modulation of maximum 64MHz (Shannon sampling limit), and demodulation with arbitrary frequency (typically an integer multiple of the modulation frequency), and we have updated to code to run on RedPitaya OS 2.0 (see notes on calibration below). These modifications are similar to [the high-frequency harmonic lock version](https://github.com/marceluda/rp_lock-in_pid_h_hf), but allows to go to higher frequency.
 
+## Project structure
+
+Here an overview of the project file structure, where folders with [*] indicating that files have been changed with respect to the original source. The `lockin+pid` folder has to be copied on the RedPitaya board (see section `Setup of the RedPitaya board`). The `fpga` folder has been removed from `lockin+pid` since it does not need to be uploaded on the board.
+
+```
+├── fpga                    FPGA source [*]
+│   ├── ip                  board generation script [*]
+│   ├── rtl                 (System) Verilog source files [*]
+│   │   └── lock            (System) Verilog source files [*]
+│   └── sdc                 constraint file
+├── images                  images for readme [*]
+└── lockin+pid              source file folder to be copied on RP board [*]
+    ├── css                 style sheets
+    ├── doc                 documentation
+    ├── info                info.json [*] and original icons
+    │   └── icon            icons for OS 2.0 [*]
+    ├── js                  java script files
+    ├── py                  python files
+    └── src                 C source files for controllerhf.so [*]
+```
+
 ## Overview
 
 We have a 556nm laser (Toptica/Azurlight) used for cooling and trapping Yb-174 or Yb-171 atoms in a magneto-optic trap (MOT) loaded from an atomic beam coming from an oven and 2D MOT (operated at the wide 399nm transition). Since the linewidth of the 556nm transition is relative narrow (~180kHz) direct absorption spectroscopy on the atomic source is difficult, and we use an ultra-low-expansion cavity (ULE cavity from Menlo Systems) to stabilize the 556nm laser with the Pound-Drever-Hall (PDH) scheme.
@@ -18,7 +39,7 @@ The PDH scheme needs an additional modulation frequency (3MHz, +5dBm) which is g
 
 Changing the offset frequency we can choose between the different species: Yb-174 at the +2nd sideband with offset frequency 2x 492.02MHz (laser red-detuned from the ULE resonance), Yb-171 at the -2nd sideband with -2x 460-470MHz (laser blue-detuned from the ULE resonance; the exact frequency still has to be determined).
 
-Example mixed signal before amplification:
+Example signal after the mixer before amplification:
  
 <img src="images/mixed_signal.jpg" width="600"/>
 
@@ -80,23 +101,43 @@ You can use the provided `RedPitaya_556nm_config.json` for the first setup.
 
 If not already done, connect to the RedPitaya with a Browser at address `http://rp-xxxxxx.local` with `xxxxxx` the last 6 hex digits of the MAC address of your board. Click on the `Lockin+pid` application icon and select `configure` and load the `RedPitaya_556nm_config.json` file. The (3MHz) sine modulation signal should be active on `Out 1`. Navigate down to `Lock control` and select the `Scan enable` button after which a ~30Hz, 244mVpp (the true value is around 300mVpp), triangle signal should be output on `Out 2` which is also the PID output. To select the locking point click below on `Choose from graph` and in the scope frame click where the ramp intersects with the x-axis. This also scales the window into a good x-range but most likely you want to zoom into the error signal in the `Range` tab and `Y axis` ± buttons. Connect the photodetector signal to `In 1` - ensure that the signal is not larger than 2Vpp when using the LV settings. You might need to adapt your settings for your system. When the cavity is aligned well you should get an error signal as in the figure below:
  
-<img src="images/error_signal.jpg" width="600"/>
+<img src="images/error_signal.png" width="600"/>
  
 The error signal should have a zero crossing with positive slope, otherwise change the phase in the `Lock-in modules` tab and `Fast square lock-in` section. To lock the laser on the error signal manually adjust the offset frequency for the zero crossing close to the selected locking point and click `Trigger Lock`. The button `Scan enable` should change to not selected and `PID B enable` should be selected indicating that the 2nd PID is active. Locking requires that you setup your PID settings accordingly on the `PID modules` tab. This depends on the laser used. Sometimes the board does not lock immediately, most of the time just retry or slightly adjust the frequency offset.
 
-> [!ATTENTION]
-> If your Reditaya board is accessible from outside of your laboratory network, change your root password with `passwd`!
+> [!IMPORTANT]
+> If your Reditaya board is accessible from outside of your laboratory network, change your root password with the `passwd` command!
+
+> [!NOTE]
+> The code was tested with RedPitaya OS 1.04 and OS 2.07, where with the newer OS the old-style calibration is required! With the new-style calibration the input and error signals in the scope is zero and without noise (tiny visible noise with x512 settings in the lockin menu). In this case SSH into the board and check output of `calib -rv` which should give `dataStructureId = 1` as the first output. If this is not the case reset the calibration to the old-syle with `calib -o`. After this you have to calibrate the analog channels. Before doing any changes you might want to backup your actual settings to a file with `cat calib.txt | calib -w` and call `rw` to allow changes of the file system. [See here for more details about the calibration utility](https://redpitaya.readthedocs.io/en/latest/appsFeatures/command_line_tools/utils/calib_util.html#calibration-utility). It would be nice to adapt the code to incorporate the new-style OS 2.0 calibration using the official [scope and generator app](https://github.com/RedPitaya/RedPitaya/tree/master/apps-tools/scopegenpro) as reference, but I am not sure if I have the time to do this.
+
+
+## Generate the FPGA bitstream
+
+The provided bitstreams `red_pitaya.bit` or `red_pitaya.bit.bin` files have been generated with `Xilinx Vivado 2020.1` on Linux Ubuntu 2020.04 LTS. Usually you do not need to modify this but in case needed, here are the steps:
+
+        source <path to Xilinx installation folder>/Vivado/2020.1/settings64.sh
+        cd <path to RedPitaya_ULE_cavity_lock>/fpga
+        make clean
+        make
+        
+This starts the generation of the bitstream using the `red_pitaya_vivado.tcl` script in non-project mode. This generates a lot of ouput on the console and takes on my laptop (Lenovo Thinkpad E14 with 8 CPU cores and 16GB memory) slightly more than 10 minutes to complete. On success the new `out` subfolder should contain among other files a new `red_pitaya.bit` file. For RedPitaya OS 1.0 this is the file to be copied into the `lock_in+pid` folder of the board.
+
+For the RedPitaya OS 2.0 the `red_pitaya.bit` file has to be converted into an `red_pitaya.bit.bin` file using these additional commands:
+
+        cd out
+        echo -n "all:{ red_pitaya.bit }" > red_pitaya.bif
+        bootgen -image red_pitaya.bif -arch zynq -process_bitstream bin -o red_pitaya.bit.bin -w
+
+The generated `red_pitaya.bit.bin` file can now be copied into the `lock_in+pid` folder of the board.
+
+The `lock_in+pid` folder of this repository contains already the needed files including the `index.html` file used to load the application in the Browser. In addition, the original files `red_pitaya_orig.bit` and `index_orig.html` are provided, which can be used to replace the newer version for testing purpose. Note, that the `RedPitaya_556nm_config.json` file might not work with the older files.
+
   
 > [!NOTE]
-> The original harmonic lock-in can be still selected in the Browser (but I am not sure if this is working). Also, the new fast harmonic lockin is still called square lockin. The `HTML` file needs a bit of cleanup.
-
-> [!NOTE]
-> The code works on OS 2.0 but requires the old-style calibration! With the new-style calibration the input and error signals in the app scope is zero and without noise (or tiny noise with x512 settings in the lockin menu) even when touching the input jumpers with a finger. In this case SSH into the board and check output of `calib -rv` which should give `dataStructureId = 1` as the first output. If this is not the case reset the calibration to the old-syle with `calib -o`. After this you have to calibrate the analog channels. Before doing any changes you might want to backup your actual settings to a file with `cat calib.txt | calib -w` and call `rw` to allow changes of the file system. [See here for more details about the calibration utility](https://redpitaya.readthedocs.io/en/latest/appsFeatures/command_line_tools/utils/calib_util.html#calibration-utility).
-
-> [!NOTE]
-> It would be nice to adapt the code to incorporate the new-style OS 2.0 calibration and app layout using the official [scope and generator app](https://github.com/RedPitaya/RedPitaya/tree/master/apps-tools/scopegenpro). It looks like a completely new app and I am not sure if I have the time to do this.
+> The `HTML` file needs some cleanup. The original harmonic lock-in can be still selected in the Browser but I am not sure if this is working. Also, the new fast harmonic lock-in is still called `square lockin` in the GUI.
 
 > [!WARNING]
-> This repo is still under construction! Numbers need to be checked. This should be finished soon.
+> This repo is still under construction! Numbers need to be checked but should be finished soon.
 
 
