@@ -41,19 +41,19 @@ Example signal after the mixer before amplification:
  
 <img src="images/mixed_signal.png" width="600"/>
 
-Here our settings per isotope. The Yb-171 settings have to be determined more precisely. Note that the given offset frequency is the one set on the function generator, i.e. the true laser detuning in the infrared is a factor 2x larger. The given wavelength (most likely in vacuum) is displayed on the NKT photonics user interface and is calculated by the software and not measured with a wavemeter. In order to verify that the error signal is coming from the 2nd harmonic of the EOM one can check the `sensitivity`, which gives how much the control signal for the laser piezo changes for a given change in offset frequency on the function generator. The first order requires twice, i.e. ±80MHz/V.
+All even harmonics of the modulation are suppressed including the carrier, which causes that the transmitted power through the ULE cavity is very low when locked. The reflected and error signals (see image of error signal below) are however centered around the ULE resonance. If one locks by mistake on one of the sidebands, then the transmission is much higher.
 
-<!--
+The table below shows our settings per isotope. The Yb-171 settings have to be determined more precisely. Note that the given offset frequency is the one set on the function generator, i.e. the true laser detuning in the infrared is a factor 2x larger. The given wavelength (most likely in vacuum) is displayed on the NKT photonics user interface and is calculated by the software and not measured with a wavemeter. In order to verify that the error signal is coming from the 2nd harmonic of the EOM one can check the `sensitivity`, which gives how much the control signal for the laser piezo changes for a given change in offset frequency on the function generator. The first order requires twice, i.e. ±80MHz/V.
+
 | isotope | offset frequency | harmonics | sensitivity | wavelength(vac.) | laser detuning |
 |---------|------------------|-----------|-------------|------------------|----------------|
 | Yb-174  | 492.020 MHz      | +2nd      | +40MHz/V    | 1111.6005(5)nm   | red            |
 | Yb-171  | 460-470 MHz      | -2nd      | -40MHz/V    | 1111.5925nm      | blue           |
--->
 
 The feedback on the NKT photonics seed laser is acting on the laser piezo and is configured with `narrow modulation` (100% modulation gain with phase compensation enabled) and using the recommended differential amplifier scheme (THS4531).
 
 > [!NOTE]
-> For external modulation of the NKT photonics seed laser ensure that in the `internal modulation` settings the `signal output` checkbox is **disabled**! If this is not the case, even though `external modulation` selected, it will not work! This issue has costed us a lot of time.
+> For external modulation of the NKT photonics seed laser ensure that in the `internal modulation` settings the `signal output` checkbox is **disabled**! If this is not the case external modulation will not work, even though `external modulation` is selected! This issue had cost us a lot of time.
 
 
 ## Setup of RedPitaya board
