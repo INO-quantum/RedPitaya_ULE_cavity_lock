@@ -4,7 +4,7 @@ This is our implementation of the ULE cavity lock of the 556nm laser for magneto
 
 This work is based on the [lock-in and PID code by Marcelo Alejandro Luda](https://marceluda.github.io/rp_lock-in_pid/). 
 
-We have modified the [original source on github](https://github.com/marceluda/rp_lock-in_pid) by replacing the square lock-in modulation with a sine-wave modulation of maximum 64MHz (Nyquist-Shannon sampling limit), and demodulation with arbitrary frequency (typically an integer multiple of the modulation frequency), and we have updated to code to run on RedPitaya OS 2.0 (see notes on calibration below). These modifications are similar to [the high-frequency harmonic lock version](https://github.com/marceluda/rp_lock-in_pid_h_hf), but allow to go to higher frequency and arbitrary demodulation.
+We have modified the [original source on github](https://github.com/marceluda/rp_lock-in_pid) by replacing the square lock-in modulation with a sine-wave modulation of maximum 64MHz (Nyquist-Shannon sampling limit), and demodulation with arbitrary frequency (typically an integer multiple of the modulation frequency), and we have updated the code to run on RedPitaya OS 2.0 (see notes on calibration below). These modifications are similar to [the high-frequency harmonic lock version](https://github.com/marceluda/rp_lock-in_pid_h_hf), but allow to go to higher frequency and arbitrary demodulation.
 
 ## Project structure
 
@@ -29,7 +29,7 @@ Here an overview of the project file structure, where folders with [*] indicatin
 
 ## Overview
 
-We have a 556nm laser (NKT/Toptica/Azurlight) used for cooling and trapping Yb-174 or Yb-171 atoms in a magneto-optic trap (MOT) loaded from an atomic beam origniating from an oven and 2D MOT operated at the wide 399nm transition, [for a foto of the green and blue-violet lasers see here](https://github.com/INO-quantum/scanning-cavity-lock). Since the linewidth of the 556nm transition is relative narrow (~180kHz) direct absorption spectroscopy on the atomic source is difficult, and we use an ultra-low-expansion cavity (ULE cavity from Menlo Systems, FSR 3GHz, finesse > 30k) to stabilize the 556nm laser with the Pound-Drever-Hall (PDH) scheme.
+We have a 556nm laser (NKT/Toptica/Azurlight) used for cooling and trapping Yb-174 or Yb-171 atoms in a magneto-optic trap (MOT) loaded from an atomic beam originating from an oven and 2D MOT operated at the wide 399nm transition, [for a foto of the green and blue-violet lasers see here](https://github.com/INO-quantum/scanning-cavity-lock). Since the linewidth of the 556nm transition is relative narrow (~180kHz) direct absorption spectroscopy on the atomic source is difficult, and we use an ultra-low-expansion cavity (ULE cavity from Menlo Systems, FSR 3GHz, finesse > 30k) to stabilize the 556nm laser with the Pound-Drever-Hall (PDH) scheme.
 
 The RedPitaya board provides everything reqiured for the PDH scheme: it generates the modulation signal, it demodulates the reflected signal form the ULE cavity to generate the error signal, and it implements the PID (proportional, integral, derivative) filter to generate the feedback signal for the laser piezo. 
 
@@ -116,7 +116,7 @@ This will automatically `exit` from the SSH session and after a few seconds relo
 
 You can use the provided `RedPitaya_556nm_config.json` for the initial setup.
 
-If not already done, connect to the RedPitaya with a Browser at address `http://rp-xxxxxx.local` with `xxxxxx` the last 6 hexadecimal digits of the MAC address of your board. Click on the `Oscilloscope+Lock-in+PID` application icon and select `Config` and `Browse...` and select the `RedPitaya_556nm_config.json` file on your computer. A new configuration selection should appear at the bottom which you can `load` onto the board (not clear if its already loaded in the first step?). The (3MHz) sine modulation signal should be active on `Out 1`. Navigate down to `Lock Control` and select the `Scan enable` button after which a ~30Hz, 150mVpp triangle signal (in `Ramp Controller` it says 244mVpp) should be output on `Out 2` which is also the PID output. To select the locking point click below on `Choose from graph` and in the scope frame click where the ramp intersects with the x-axis. This also scales the window into a good x-range but most likely you want to zoom into the error signal in the `Range` tab and `Y axis` ± buttons. Connect the photodetector signal to `In 1` - ensure that the signal is not larger than 2Vpp when using the LV settings. Most likely, you need to adapt your settings for your system and to optimize the PID settings (we use `PID B`). When the cavity is aligned you should get an error signal as in the figure below (this is with ~50uW before the cavity and photo-detector signal of 200mV):
+If not already done, connect to the RedPitaya with a browser at address `http://rp-xxxxxx.local` with `xxxxxx` the last 6 hexadecimal digits of the MAC address of your board. Click on the `Oscilloscope+Lock-in+PID` application icon and select `Config` and `Browse...` and select the `RedPitaya_556nm_config.json` file on your computer. A new configuration selection should appear at the bottom which you can `load` onto the board (not clear if its already loaded in the first step?). The (3MHz) sine modulation signal should be active on `Out 1`. Navigate down to `Lock Control` and select the `Scan enable` button after which a ~30Hz, 150mVpp triangle signal (in `Ramp Controller` it says 244mVpp) should be output on `Out 2` which is also the PID output. To select the locking point click below on `Choose from graph` and in the scope frame click where the ramp intersects with the x-axis. This also scales the window into a good x-range but most likely you want to zoom into the error signal in the `Range` tab and `Y axis` ± buttons. Connect the photodetector signal to `In 1` - ensure that the signal is not larger than 2Vpp when using the LV settings. Most likely, you need to adapt your settings for your system and to optimize the PID settings (we use `PID B`). When the cavity is aligned you should get an error signal as in the figure below (this is with ~50uW before the cavity and photo-detector signal of 200mV):
  
 <img src="images/error_signal.png" width="600"/>
  
@@ -141,9 +141,9 @@ For the RedPitaya OS 2.0 the `red_pitaya.bit` file has to be converted into an `
 
 The generated `red_pitaya.bit.bin` file can now be copied into the `lock_in+pid` folder of the board.
 
-The `lock_in+pid` folder of this repository contains already the needed files including the `index.html` file used to load the application in the Browser. In addition, the original files `red_pitaya_orig.bit` and `index_orig.html` are provided, which can be used to replace the newer version for testing purpose. Note, that the `RedPitaya_556nm_config.json` file might not work with the older files.
+The `lock_in+pid` folder of this repository contains already the needed files including the `index.html` file used to load the application in the browser. In addition, the original files `red_pitaya_orig.bit` and `index_orig.html` are provided, which can be used to replace the newer version for testing purpose. Note, that the `RedPitaya_556nm_config.json` file might not work with the older files.
 
   
 > [!NOTE]
-> The `index.html` file needs some cleanup. The original harmonic lock-in can be still selected in the Browser but I am not sure if this is working. Also, the new fast harmonic lock-in is still called `square lockin` in the GUI.
+> The `index.html` file needs some cleanup. The original harmonic lock-in can be still selected in the browser but I am not sure if this is working. Also, the new fast harmonic lock-in is still called `square lockin` in the GUI.
 
